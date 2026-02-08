@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parsa, will you be my valentine?</title>
+    <style>
+        :root {
+            --primary-pink: #ff4d6d;
+            --soft-pink: #ffb3c1;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #fff0f3;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        /* Floating Hearts Background Animation */
+        .hearts-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Container Card */
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.2);
+            width: 90%;
+            max-width: 400px;
+            z-index: 10;
+            border: 2px solid var(--soft-pink);
+            transition: transform 0.5s ease;
+        }
+
+        .container:hover {
+            transform: scale(1.02);
+        }
+
+        h1 {
+            color: var(--primary-pink);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        p {
+            color: #555;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            position: relative;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        #yesBtn {
+            background-color: var(--primary-pink);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
+        }
+
+        #noBtn {
+            background-color: #eee;
+            color: #666;
+            position: relative;
+        }
+
+        .gif-container img {
+            width: 150px;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+        }
+
+        /* Success Screen */
+        .hidden {
+            display: none;
+        }
+
+        .celebration h1 {
+            font-size: 2.5rem;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Mobile specific adjustments */
+        @media (max-width: 480px) {
+            h1 { font-size: 1.5rem; }
+            .btn { padding: 10px 25px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hearts-bg" id="heartsBg"></div>
+
+    <div class="container" id="mainBox">
+        <div class="gif-container">
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueG54YmF5Znd6eXN6N3B6eXN6N3B6eXN6N3B6eXN6N3B6eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/cLS1cfxvGOPVpf9g3y/giphy.gif" alt="Cute Cat">
+        </div>
+        <h1>Parsa,</h1>
+        <p>Will you be my Valentine?</p>
+        
+        <div class="buttons">
+            <button class="btn" id="yesBtn">Yes!</button>
+            <button class="btn" id="noBtn">No</button>
+        </div>
+    </div>
+
+    <div class="container hidden" id="successBox">
+        <div class="celebration">
+            <div class="gif-container">
+                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM2ZueG54YmF5Znd6eXN6N3B6eXN6N3B6eXN6N3B6eXN6N3B6eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/26BRv0ThflsHCqDrG/giphy.gif" alt="Happy Dance">
+            </div>
+            <h1>YAYYY! ❤️</h1>
+            <p>I knew you'd say yes! I love you!</p>
+        </div>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const mainBox = document.getElementById('mainBox');
+        const successBox = document.getElementById('successBox');
+        const heartsBg = document.getElementById('heartsBg');
+
+        // "Mortal Combat" level speed for the No button
+        const speedMove = (e) => {
+            // Calculate a random position
+            // Subtracting more padding so it doesn't get stuck on edges
+            const padding = 100;
+            const x = Math.random() * (window.innerWidth - padding);
+            const y = Math.random() * (window.innerHeight - padding);
+            
+            // Remove any transition for instant "teleportation"
+            noBtn.style.transition = 'none'; 
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = `${x}px`;
+            noBtn.style.top = `${y}px`;
+            noBtn.style.zIndex = '999'; // Ensure it stays on top while moving
+        };
+
+        // Trigger on mouse enter (very fast detection)
+        noBtn.addEventListener('mouseenter', speedMove);
+        
+        // Trigger on click just in case she's a pro gamer
+        noBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            speedMove();
+        });
+
+        // Mobile touch protection - moves before the tap even registers
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            speedMove();
+        });
+
+        // Yes button logic remains sweet
+        yesBtn.addEventListener('click', () => {
+            mainBox.classList.add('hidden');
+            successBox.classList.remove('hidden');
+            createFinalExplosion();
+        });
+
+        // Background Heart Generator
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.style.position = 'fixed';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = '100vh';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            heart.style.opacity = Math.random();
+            heart.style.pointerEvents = 'none';
+            heart.style.transition = 'transform 5s linear, opacity 5s';
+            
+            heartsBg.appendChild(heart);
+
+            setTimeout(() => {
+                heart.style.transform = `translateY(-110vh) rotate(${Math.random() * 360}deg)`;
+                heart.style.opacity = '0';
+            }, 100);
+
+            setTimeout(() => heart.remove(), 6000);
+        }
+
+        setInterval(createHeart, 300);
+
+        function createFinalExplosion() {
+            for(let i=0; i<75; i++) {
+                setTimeout(createHeart, i * 15);
+            }
+        }
+    </script>
+</body>
+</html>
